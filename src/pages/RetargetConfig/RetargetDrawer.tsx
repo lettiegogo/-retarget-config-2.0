@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import {
   Drawer,
   Steps,
@@ -49,6 +49,17 @@ const RetargetDrawer: React.FC<RetargetDrawerProps> = ({
   const touchTimeType = Form.useWatch('touchTimeType', form)
   const actionType = Form.useWatch('actionType', form) || []
 
+  useEffect(() => {
+    if (open) {
+      if (initialValues) {
+        form.setFieldsValue(initialValues)
+      } else {
+        form.resetFields()
+      }
+      setCurrent(0)
+    }
+  }, [open])
+
   const handleNext = async () => {
     try {
       if (current === 0) {
@@ -70,16 +81,13 @@ const RetargetDrawer: React.FC<RetargetDrawerProps> = ({
     try {
       const values = await form.validateFields()
       onConfirm(values)
-      form.resetFields()
-      setCurrent(0)
+      onClose()
     } catch {
       // validation failed
     }
   }
 
   const handleClose = () => {
-    form.resetFields()
-    setCurrent(0)
     onClose()
   }
 
@@ -128,7 +136,7 @@ const RetargetDrawer: React.FC<RetargetDrawerProps> = ({
       />
 
       <Form form={form} layout="vertical" initialValues={initialValues}>
-        {/* Step 1: 人群配置 — always rendered, hidden via style */}
+        {/* Step 1: 人群配置 */}
         <div style={{ display: current === 0 ? 'block' : 'none' }}>
           <Form.Item
             label="关联画布"
@@ -185,7 +193,7 @@ const RetargetDrawer: React.FC<RetargetDrawerProps> = ({
           </Form.Item>
         </div>
 
-        {/* Step 2: 执行动作配置 — always rendered, hidden via style */}
+        {/* Step 2: 执行动作配置 */}
         <div style={{ display: current === 1 ? 'block' : 'none' }}>
           <SectionTitle title="触达时间" />
 
@@ -262,7 +270,7 @@ const RetargetDrawer: React.FC<RetargetDrawerProps> = ({
 
           <SectionTitle title="触达内容" style={{ marginTop: 24 }} />
 
-          {/* 执行动作选择 - 卡片式多选 */}
+          {/* 执行动作选择 */}
           <Form.Item
             label="执行动作"
             name="actionType"

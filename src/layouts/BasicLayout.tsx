@@ -10,7 +10,6 @@ import {
 import {
   MenuFoldOutlined,
   MenuUnfoldOutlined,
-  DatabaseOutlined,
   SendOutlined,
 } from '@ant-design/icons'
 
@@ -19,14 +18,9 @@ const { Title } = Typography
 
 const menuItems = [
   {
-    key: '/',
-    icon: <DatabaseOutlined />,
-    label: '首页',
-  },
-  {
     key: '/retarget-canvas',
     icon: <SendOutlined />,
-    label: '二次触达配置',
+    label: '触发型画布',
   },
 ]
 
@@ -53,7 +47,7 @@ const BasicLayout: React.FC = () => {
         >
           <div style={{ padding: '16px', textAlign: 'center' }}>
             <Title level={4} style={{ margin: 0 }}>
-              {collapsed ? '原型' : '原型项目'}
+              {collapsed ? '营销' : '营销画布'}
             </Title>
           </div>
           <Menu
