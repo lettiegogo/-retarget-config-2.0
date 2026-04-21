@@ -14,10 +14,6 @@ import { ArrowLeftOutlined } from '@ant-design/icons'
 import {
   mockCampaignInfo,
   mockCoreMetrics,
-  mockTrendData,
-  type CampaignBasicInfo,
-  type CoreMetrics,
-  type TrendData,
 } from '../../mock/eventAnalysis'
 
 const { Title, Text, Link } = Typography
@@ -37,7 +33,7 @@ const EventAnalysis: React.FC = () => {
   const {
     canvasCoverageUsers, newUserCount, verifyOrderRate,
     couponSentCount, introducedGMV, couponVerifyRate,
-    introducedGMVValue, introducedOrderAvgPrice,
+    introducedOrderAvgPrice,
   } = mockCoreMetrics
 
   return (
