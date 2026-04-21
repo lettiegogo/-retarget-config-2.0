@@ -11,6 +11,8 @@ import {
   MenuFoldOutlined,
   MenuUnfoldOutlined,
   SendOutlined,
+  BarChartOutlined,
+  DashboardOutlined,
 } from '@ant-design/icons'
 
 const { Header, Sider, Content } = Layout
@@ -21,6 +23,16 @@ const menuItems = [
     key: '/retarget-canvas',
     icon: <SendOutlined />,
     label: '触发型画布',
+  },
+  {
+    key: '/statistics',
+    icon: <BarChartOutlined />,
+    label: '事件统计',
+  },
+  {
+    key: '/event-analysis',
+    icon: <DashboardOutlined />,
+    label: '事件分析看板',
   },
 ]
 

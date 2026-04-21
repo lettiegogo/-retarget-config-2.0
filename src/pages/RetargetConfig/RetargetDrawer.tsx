@@ -12,6 +12,7 @@ import {
   Card,
   Typography,
   DatePicker,
+  message,
 } from 'antd'
 import type { RetargetConfig } from '../../mock/retargetConfig'
 import { PlusOutlined, DeleteOutlined, CheckCircleFilled } from '@ant-design/icons'
@@ -63,7 +64,7 @@ const RetargetDrawer: React.FC<RetargetDrawerProps> = ({
   const handleNext = async () => {
     try {
       if (current === 0) {
-        await form.validateFields(['scenario', 'couponIds'])
+        await form.validateFields(['name', 'scenario', 'couponIds'])
       } else {
         await form.validateFields(['touchTimeType', 'actionType'])
       }
@@ -79,11 +80,18 @@ const RetargetDrawer: React.FC<RetargetDrawerProps> = ({
 
   const handleConfirm = async () => {
     try {
+      if (current === 0) {
+        await form.validateFields(['name', 'scenario', 'couponIds'])
+        message.warning('请先完成第二步配置')
+        setCurrent(1)
+        return
+      }
+      // current === 1: validate all and submit
       const values = await form.validateFields()
       onConfirm(values)
       onClose()
     } catch {
-      // validation failed
+      message.error('请填写完整的配置信息')
     }
   }
 
@@ -144,6 +152,14 @@ const RetargetDrawer: React.FC<RetargetDrawerProps> = ({
             initialValue={canvasName}
           >
             <Input disabled />
+          </Form.Item>
+
+          <Form.Item
+            label="二次触达名称"
+            name="name"
+            rules={[{ required: true, message: '请输入二次触达名称' }]}
+          >
+            <Input placeholder="请输入二次触达名称" maxLength={20} />
           </Form.Item>
 
           <Form.Item

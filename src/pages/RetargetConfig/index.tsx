@@ -93,7 +93,7 @@ interface RetargetPreviewCardProps {
 }
 
 const RetargetPreviewCard: React.FC<RetargetPreviewCardProps> = ({ config, onEdit, onDelete }) => {
-  const scenarioLabel = config.scenario === 'unredeemed' ? '领券未核销' : '领券已核销'
+  const scenarioLabel = config.scenario === 'redeemed' ? '领券已核销' : '领券未核销'
   const actionTypes = (config.actionType || []) as string[]
 
   const touchTimeLabel = useMemo(() => {
@@ -110,14 +110,14 @@ const RetargetPreviewCard: React.FC<RetargetPreviewCardProps> = ({ config, onEdi
       default:
         return '-'
     }
-  }, [config])
+  }, [config.touchTimeType, config.touchTimeFixed, config.touchTimeValue])
 
   const actionConfig = (config.actionConfig || {}) as Record<string, unknown>
   const prizes = (actionConfig.prizes || []) as { prizeType?: string; prizeContent?: string; prizeCount?: number }[]
   const messageTemplate = actionConfig.messageTemplate as string | undefined
 
   const couponLabels = useMemo(() => {
-    if (!config.couponIds) return []
+    if (!config.couponIds || config.couponIds.length === 0) return []
     return config.couponIds.map((id) => {
       const c = mockCoupons.find((x) => x.value === id)
       return c?.label || id
@@ -161,6 +161,7 @@ const RetargetPreviewCard: React.FC<RetargetPreviewCardProps> = ({ config, onEdi
         <Space>
           <SendOutlined style={{ color: '#1050DC', fontSize: 16 }} />
           <Text strong style={{ color: '#1050DC' }}>二次触达</Text>
+          {config.name && <Text>{config.name}</Text>}
         </Space>
         <Space size={4}>
           <Button type="text" size="small" icon={<EditOutlined />} onClick={(e) => { e.stopPropagation(); onEdit() }} />
@@ -330,7 +331,9 @@ const RetargetCanvas: React.FC = () => {
             <ConnectorLine />
             <FlowNode label="执行动作" color="#fa8c16" icon={<RocketOutlined style={{ color: '#fa8c16' }} />} />
             <ConnectorLine />
-            <ConnectorPlus color="#722ed1" label="二次触达" onClick={handleOpenDrawer} />
+            {retargetConfigList.length < 2 && (
+              <ConnectorPlus color="#722ed1" label="二次触达" onClick={handleOpenDrawer} />
+            )}
           </Space>
 
           {/* 右侧：卡片列垂直堆叠 */}

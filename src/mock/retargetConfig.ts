@@ -1,4 +1,5 @@
 export interface RetargetConfig {
+  name?: string;
   scenario?: 'unredeemed' | 'redeemed';
   couponIds?: string[];
   touchTimeType?: 'fixed' | 'dynamic' | 'immediate' | 'afterHours';
